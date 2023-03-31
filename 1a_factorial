@@ -1,0 +1,73 @@
+.model small
+.stack 100h
+.data
+    msg1 db 'Enter the input:$'
+    msg2 db 'Factorial of $'
+    msg3 db ' is: $'
+.code
+main proc 
+    mov ax,@data
+    mov ds,ax
+    
+    mov ah,9
+    lea dx,msg1
+    int 21h 
+    
+    mov ah,1
+    int 21h
+    
+    sub al,48
+    mov bl,al
+    mov al,1
+    
+    cmp bl,0 
+    mov bh,1
+    je output
+    
+    factorial:
+    cmp bh,bl
+    je output
+    inc bh 
+    mul bh
+    jmp factorial
+    
+    
+    
+    output:
+    mov bh,al
+    add bh,48
+    call new
+    
+    mov ah,9
+    lea dx,msg2 
+    int 21h
+    
+    add bl,48
+    mov ah,2
+    mov dl,bl
+    int 21h
+    
+    mov ah,9
+    lea dx,msg3
+    int 21h
+    
+    mov ah,2
+    mov dl,bh
+    int 21h     
+  
+    exit:
+    mov ah,4ch
+    int 21h    
+    
+    main endp 
+    
+    new proc
+        mov ah,2
+        mov dl,13
+        int 21h
+        mov ah,2
+        mov dl,10
+        int 21h
+        ret 
+    new endp
+end main
