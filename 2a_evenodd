@@ -1,0 +1,53 @@
+.model small
+.stack 100h
+.data 
+    inputmsg db 'Enter the input:$'
+    msg1 db 'The number is even$'
+    msg2 db 'The number is odd$'
+.code
+main proc 
+    mov ax,@data
+    mov ds,ax 
+    
+    mov ah,9
+    lea dx,inputmsg
+    int 21h
+    
+    mov ah,1
+    int 21h
+    sub al,48
+    mov bl,al
+    
+    call new
+    
+    and bl,1
+    
+    cmp bl,1
+    je odd
+    
+    mov ah,9
+    lea dx,msg1
+    int 21h
+    jmp exit
+    
+    odd:
+    mov ah,9
+    lea dx,msg2
+    int 21h
+    
+    exit:
+    mov ah,4ch
+    int 21h    
+    
+    main endp 
+    
+    new proc
+        mov ah,2
+        mov dl,13
+        int 21h
+        mov ah,2
+        mov dl,10
+        int 21h
+        ret 
+    new endp
+end main
