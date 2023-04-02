@@ -51,7 +51,7 @@ main proc
     
     first:
     mov di,0
-    
+    push si
         inner:
             mov ah,str1[si] 
             mov al,str2[di] 
@@ -60,11 +60,12 @@ main proc
             cmp ah,al
             je inner
             cmp al,'$'
-            je found 
-            inc si 
+            je found  
             cmp ah,'$'
             je notfound 
-        jmp first
+            pop si
+            inc si
+    jmp first
         
     found:
         call new
@@ -78,8 +79,7 @@ main proc
         mov ah,9
         lea dx,outmsg2
         int 21h 
-                   
-    
+        
     exit:
         mov ah,4ch
         int 21h
@@ -94,7 +94,5 @@ main proc
         mov dl,10
         int 21h
         ret 
-    new endp
-        
-        
+    new endp  
 end main
